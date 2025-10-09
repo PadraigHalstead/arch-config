@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+paru -S --noconfirm --needed go air gopls delve staticcheck make cmake pkgconf 
+

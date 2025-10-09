@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+paru -S --noconfirm --needed waybar
+
+rm -rf $HOME/.config/waybar
+mkdir -p "$HOME/.config/waybar" && cp ./config.jsonc "$HOME/.config/waybar/"
+
+cp ./styles.css "$HOME./config/waybar"

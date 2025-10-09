@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+paru -S --noconfirm --needed zsh fastfetch starship ghostty
+
+starship preset catppuccin-powerline -o ~/.config/starship.toml
+
+hash -r
+chsh -s $(which zsh)
+sudo chsh -s $(which zsh)
+
+# cp $HOME/.config/ghostty/config

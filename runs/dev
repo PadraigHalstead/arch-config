@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+sudo pacman -S --noconfirm --needed git lazygit base-devel openssh usbmuxd libimobiledevice ifuse networkmanager tmux
+sudo pacman -S --noconfirm --needed unzip wl-clipboard pavucontrol gzip curl wget tar hyprshot #hyprlock 
+
+# Res TODO: Dynamically get the DP
+wlr-randr --output DP-2 --mode 1920x1080@60
+
+# Mobile Hotspot
+sudo systemctl enable --now usbmuxd.service
+
+# Enable SSH Keys
+systemctl --user enable ssh-agent
+systemctl --user start ssh-agent
+
+# Set time correctly
+sudo timedatectl set-timezone Europe/Dublin
+sudo timedatectl set-ntp true
+sudo timedatectl set-local-rtc 0
+
+# paru install
+if ! command -v paru >/dev/null 2>&1; then
+  git clone https://aur.archlinux.org/paru.git
+  cd paru
+  makepkg -si --noconfirm
+  cd ..
+  rm -rf ./paru/
+fi
+
+paru -S --noconfirm --needed obsidian brave-bin hyprshot # wlogout-git
+
+# Set git creds
+set -euo pipefail
+
+have_val() {
+  # returns 0 if the key has a non-empty value
+  local key="$1"
+  local val
+  val="$(git config --global --get "$key" || true)"
+  [[ -n "${val:-}" ]]
+}
+
+ensure_email() {
+  local key="user.email"
+  if have_val "$key"; then
+    echo "✓ $key already set to: $(git config --global --get $key)"
+    return
+  fi
+
+  local email=""
+  while [[ -z "$email" || "$email" != *"@"* ]]; do
+    read -rp "Enter your Git email: " email
+    [[ -z "$email" || "$email" != *"@"* ]] && echo "Please enter a valid email (must contain @)."
+  done
+  git config --global "$key" "$email"
+  echo "Set $key to: $(git config --global --get $key)"
+}
+
+ensure_name() {
+  local key="user.name"
+  if have_val "$key"; then
+    echo "$(git config --global --get $key)"
+    return
+  fi
+
+  local name=""
+  while [[ -z "$name" ]]; do
+    read -rp "Enter your Git username (your name): " name
+    [[ -z "$name" ]] && echo "Name cannot be empty."
+  done
+  git config --global "$key" "$name"
+}
+
+ensure_email
+ensure_name
+

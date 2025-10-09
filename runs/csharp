@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+paru -S --needed --noconfirm dotnet-sdk dotnet-runtime aspnet-runtime

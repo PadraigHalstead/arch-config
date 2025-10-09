@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+sudo pacman -S --needed --noconfirm docker 
+sudo systemctl enable --now docker
+
+# Add current user to docker group (log out/in or newgrp to apply)
+if ! id -nG "$USER" | grep -qw docker; then
+  sudo usermod -aG docker "$USER"
+  echo "→ Added $USER to 'docker' group. Open a new shell (or run 'newgrp docker') to use docker without sudo."
+fi
+
+# Enable BuildKit (faster, better caching)
+if ! grep -q 'DOCKER_BUILDKIT' "$HOME/.bashrc" 2>/dev/null; then
+  {
+    echo 'export DOCKER_BUILDKIT=1'
+    echo 'export COMPOSE_DOCKER_CLI_BUILD=1'
+  } >> "$HOME/.bashrc"
+  {
+    echo 'export DOCKER_BUILDKIT=1'
+    echo 'export COMPOSE_DOCKER_CLI_BUILD=1'
+  } >> "$HOME/.zshrc" 2>/dev/null || true
+fi

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+paru -S --noconfirm --needed nvim luarocks lua ttf-jetbrains-mono-nerd ttf-font-awesome ttf-nerd-fonts-symbols
+rm -rf $HOME/.local/share/nvim
+
+# copy configs
+
+# At the end
+# sudo luarocks install luacheck
