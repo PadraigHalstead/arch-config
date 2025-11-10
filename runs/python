@@ -2,5 +2,7 @@
 
 
 sudo pacman -S --needed --noconfirm python python-pip python-virtualenv python-numpy python-matplotlib tldr
-sudo ln -s /usr/bin/python3 /usr/bin/python
+paru -S --needed --noconfirm pyright
 
+sudo ln -s /usr/bin/python3 /usr/bin/python
+pip install ruff mypy

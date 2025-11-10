@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-sudo pacman -S --needed --noconfirm gcc clangd make cmake ninja boost
+sudo pacman -Sy
+sudo pacman -S --needed --noconfirm gcc gcc-core gcc-g++ 
+sudo pacman -S --needed --noconfirm protobuf abseil-cpp bazel
+paru -S --needed --noconfirm autoconf automake libtool pkg-config make cmake ninja boost clang
+
+# GRPC
+
